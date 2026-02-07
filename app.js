@@ -1,8 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
-const { AppError } = require("./utils/errors");
-
 const { PORT = 3001 } = process.env;
 
 const app = express();
@@ -25,13 +23,7 @@ app.use("/", mainRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
-
-  const status = err.status || 500;
-
-  const message =
-    status === 500 ? "An error has occurred on the server" : err.message;
-
-  res.status(status).send({ message });
+  res.status(500).send({ message: "An error has occurred on the server" });
 });
 
 app.listen(PORT, () => {
