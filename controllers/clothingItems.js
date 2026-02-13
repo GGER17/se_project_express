@@ -14,9 +14,20 @@ const getItems = (req, res, next) => {
 };
 
 const deleteItem = (req, res, next) => {
-  ClothingItem.findByIdAndDelete(req.params.itemId)
+  ClothingItem.findById(req.params.itemId)
     .orFail()
-    .then((item) => res.send(item))
+    .then((item) => {
+      if (item.owner.toString() !== req.user._id) {
+        const err = new Error(
+          "Forbidden: You are only allowed to delete your own items"
+        );
+        err.statusCode = 403;
+        throw err;
+      }
+
+      return item.deleteOne();
+    })
+    .then(() => res.send({ message: "Item deleted successfully" }))
     .catch(next);
 };
 
