@@ -22,8 +22,10 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        err.statusCode = 409;
-        err.message = "Email already exists";
+        return next({
+          statusCode: 409,
+          message: "Email already exists",
+        });
       }
       next(err);
     });
@@ -31,6 +33,13 @@ const createUser = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next({
+      statusCode: 400,
+      message: "Both email and password are required",
+    });
+  }
 
   User.findUserByCredentials(email, password)
     .then((user) => {
