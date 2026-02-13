@@ -9,36 +9,37 @@ This backend was developed across Sprint 12 & 13, focusing first on core routing
 
 ### Sprint 12 – Core API Structure
 
-Express server with modular routing
+- Express server with modular routing
 
-Controllers for users and cards
+- Controllers for users and cards
 
-CRUD operations for users and cards
+- CRUD operations for users and cards
 
-MongoDB connection with Mongoose
+- MongoDB connection with Mongoose
 
-Request validation using Celebrate/Joi
+- Request validation using Celebrate/Joi
 
-Centralized error handling middleware
+- Centralized error handling middleware
 
-Organized project structure following best practices
+- Organized project structure following best practices
 
-Sprint 13 – Authentication & Security
-User registration and login
+### Sprint 13 – Authentication & Security
 
-Password hashing with bcrypt
+- User registration and login
 
-JWT‑based authentication
+- Password hashing with bcrypt
 
-Protected routes using auth middleware
+- JWT‑based authentication
 
-Custom error classes (BadRequest, Unauthorized, Conflict, etc.)
+- Protected routes using auth middleware
 
-Duplicate email prevention using unique index
+- Custom error classes (BadRequest, Unauthorized, Conflict, etc.)
 
-Database index rebuild to fix duplicate key issues
+- Duplicate email prevention using unique index
 
-All Sprint 13 tests passed successfully
+- Database index rebuild to fix duplicate key issues
+
+- All Sprint 13 tests passed successfully
 
 # 🛠 Technologies Used
 
