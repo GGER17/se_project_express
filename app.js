@@ -1,8 +1,12 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const mainRouter = require("./routes/index");
 const { PORT = 3001 } = process.env;
+const errorHandler = require("./middlewares/error-handler");
+const { errors } = require("celebrate");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
 
@@ -19,7 +23,9 @@ mongoose
 
 app.use("/", mainRouter);
 
-app.use((err, req, res, next) => {
+app.use(requestLogger);
+
+/*app.use((err, req, res, next) => {
   console.error(err);
 
   const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("./utils/errors");
@@ -43,7 +49,11 @@ app.use((err, req, res, next) => {
   return res
     .status(DEFAULT)
     .send({ message: "An error has occurred on the server" });
-});
+});*/
+
+app.use(errors());
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
