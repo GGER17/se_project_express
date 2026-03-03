@@ -41,11 +41,43 @@ This backend was developed across Sprint 12 & 13, focusing first on core routing
 
 - All Sprint 13 tests passed successfully
 
+### Sprint 14 — Advanced Backend Functionality
+
+- JWT‑based authentication with protected routes
+
+- User profile update (PATCH /users/me)
+
+- Clothing item creation, deletion, and like toggling
+
+- Like state persists between page loads
+
+- Full request validation using Celebrate/Joi
+
+- Centralized error handling with custom error classes
+
+- Winston request and error logging
+
+- Proper middleware order and modular routing
+
+### Sprint 15 — Deployment
+
+- Deployed on a Google Cloud VM
+
+- PM2 process manager with automatic crash recovery
+
+- nginx reverse proxy + HTTPS configuration
+
+- SSL certificates via Certbot
+
+- Environment variables stored securely on the server
+
+- Frontend build served by nginx
+
+- Backend accessible via custom domain
+
 # 🛠 Technologies Used
 
-- Node.js
-
-- Express.js
+- Node.js + Express.js
 
 - MongoDB + Mongoose
 
@@ -55,7 +87,15 @@ This backend was developed across Sprint 12 & 13, focusing first on core routing
 
 - dotenv
 
-- Nodemon (dev)
+- PM2
+
+- nginx
+
+- Certbot (SSL)
+
+- Celebrate / Joi
+
+- Winston
 
 # 📡 API Endpoints
 
@@ -74,30 +114,55 @@ This backend was developed across Sprint 12 & 13, focusing first on core routing
       GET            /users/:id         Login and receive a JWT
       PATCH          /users/me          Get user by ID
       PATCH          /users/me/avatar   Update avatar
+      GET            /users/me          Get current user
+      POST           /users/me          Update name + avatar
 
 ## Cards
 
 ### Method -------- Endpoint -------- Description
 
-      GET            /cards             Get all cards
-      POST           /cards             Create a new card
-      DELETE         /cards/:id         Delete a card
-      PUT            /cards/:id/likes   Like a card
-      DELETE         /cards/:id/likes   Remove like
+      GET            /items             Get all items (public)
+      POST           /items             Create a new item
+      DELETE         /items/:id         Delete an item (Only owner)
+      PUT            /items/:id/likes   Like a item
+      DELETE         /items/:id/likes   Remove like
 
 # ⚠️ Error Handling
 
 Project Express uses a centralized error system that includes:
 
-- Custom error classes
+- Custom error classes (BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError, ConflictError)
 
 - MongoDB duplicate key detection
 
 - Default 500 fallback
 
-- Clean, consistent error responses
+- Consistent JSON error responses
 
-# 🚀 Installation & Setup
+- Celebrate validation errors handled via errors()
+
+- CastError and ValidationError translation
+
+# 🚀 Deployment
+
+## Backend Domain
+
+- https://api.gwtwr.jumpingcrab.com
+
+## Frontend Domain
+
+- https://gwtwr.jumpingcrab.com
+- https://www.gwtwr.jumpingcrab.com
+
+## Frontend GitHub Repository
+
+- https://github.com/GGER17/se_project_react
+
+# 🎥 Project Pitch Video
+
+- [Project Pitch Video] (https://drive.google.com/file/d/1LbtZb6h1CVJbh6jBGnBdf3Rt_I27IEHV/view?usp=sharing)
+
+# Installation & Setup
 
 1. Clone the repository:
    git clone <your-repo-url>
@@ -120,13 +185,7 @@ All Sprint 13 tests passed after rebuilding the MongoDB unique index to resolve 
 
 # 📈 Future Improvements
 
-Add more detailed user profiles
-
-Deploy to a cloud platform
-
-# 🎥 Project Pitch Video
-
-- [Project Pitch Video] (https://drive.google.com/file/d/1LbtZb6h1CVJbh6jBGnBdf3Rt_I27IEHV/view?usp=sharing)
+- Modify for mobile screens
 
 # WTWR (What to Wear?): Back End
 
