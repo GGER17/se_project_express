@@ -21,35 +21,17 @@ mongoose
   })
   .catch(console.error);
 
-app.use("/", mainRouter);
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
 
 app.use(requestLogger);
 
-/*app.use((err, req, res, next) => {
-  console.error(err);
+app.use("/", mainRouter);
 
-  const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("./utils/errors");
-
-  if (err.name === "CastError") {
-    return res.status(BAD_REQUEST).send({ message: "Invalid ID format" });
-  }
-
-  if (err.name === "ValidationError") {
-    return res.status(BAD_REQUEST).send({ message: "Invalid data passed" });
-  }
-
-  if (err.name === "DocumentNotFoundError") {
-    return res.status(NOT_FOUND).send({ message: "Resource not found" });
-  }
-
-  if (err.statusCode) {
-    return res.status(err.statusCode).send({ message: err.message });
-  }
-
-  return res
-    .status(DEFAULT)
-    .send({ message: "An error has occurred on the server" });
-});*/
+app.use(errorLogger);
 
 app.use(errors());
 

@@ -3,6 +3,13 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 
+const {
+  BadRequestError,
+  ConflictError,
+  UnauthorizedError,
+  NotFoundError,
+} = require("../errors");
+
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send(users))
@@ -22,12 +29,12 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        return next({
-          statusCode: 409,
-          message: "Email already exists",
-        });
+        return next(new ConflictError("Email already exists"));
       }
-      next(err);
+      if (err.name === "ValidationError") {
+        return next(new BadRequestError("Invalid data for creating user"));
+      }
+      return next(err);
     });
 };
 
@@ -35,10 +42,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next({
-      statusCode: 400,
-      message: "Both email and password are required",
-    });
+    return next(new BadRequestError("Both email and password are required"));
   }
 
   User.findUserByCredentials(email, password)
@@ -48,18 +52,21 @@ const login = (req, res, next) => {
       });
       res.send({ token });
     })
-    .catch((err) => {
-      err.statusCode = 401;
-      err.message = "Incorrect email or password";
-      next(err);
+    .catch(() => {
+      next(new UnauthorizedError("Incorrect email or password"));
     });
 };
 
 const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail()
+    .orFail(() => new NotFoundError("User not found"))
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return next(new BadRequestError("Invalid user ID"));
+      }
+      return next(err);
+    });
 };
 
 const updateUser = (req, res, next) => {
@@ -70,9 +77,14 @@ const updateUser = (req, res, next) => {
     { name, avatar },
     { new: true, runValidators: true }
   )
-    .orFail()
+    .orFail(() => new NotFoundError("User not found"))
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return next(new BadRequestError("Invalid data for updating user"));
+      }
+      return next(err);
+    });
 };
 
 module.exports = { getUsers, createUser, getCurrentUser, updateUser, login };
