@@ -74,6 +74,3 @@ module.exports.validateItemId = celebrate({
     itemId: Joi.string().hex().length(24).required(),
   }),
 });
-
-/* idea?
-module.exports = { validateCardBody, validateUserBody, validateLogin, validateId, validateUserId, validateItemId, };*/
