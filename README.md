@@ -160,7 +160,7 @@ Project Express uses a centralized error system that includes:
 
 # 🎥 Project Pitch Video
 
-- [Project Pitch Video] (https://drive.google.com/file/d/1LbtZb6h1CVJbh6jBGnBdf3Rt_I27IEHV/view?usp=sharing)
+- [Project Pitch Video] (https://drive.google.com/file/d/1j7bjAYVVMKIHD_e4bsZZkmShOpTmJZIa/view?usp=drive_link)
 
 # Installation & Setup
 
